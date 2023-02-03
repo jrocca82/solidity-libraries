@@ -35,7 +35,7 @@ library TokenMetadata {
   }
 
   function formatAttributes(
-    Attributes[] memory _attributes,
+    Attributes memory _attributes,
     bool _addComma
   ) internal pure returns (bytes memory formattedTokenType) {
     formattedTokenType = abi.encodePacked(
@@ -54,14 +54,14 @@ library TokenMetadata {
   }
 
   function formatAttributesInMetadata(
-    Attributes[] memory _attributes,
+    Attributes[] memory _attributes
   ) internal pure returns (bytes memory attributes) {
     attributes = abi.encodePacked('"attributes": [');
 
     for (uint256 i = 0; i < _attributes.length; i++) {
-      bytes memory formattedType = formatTokenType(
+      bytes memory formattedType = formatAttributes(
         _attributes[i],
-        i != _tokenTypes.length - 1
+        i != _attributes.length - 1
       );
 
       attributes = bytes.concat(attributes, formattedType);
@@ -75,7 +75,7 @@ library TokenMetadata {
     string memory _name,
     string memory _imageURI,
     string memory _description,
-    uint256 _tokenId,
+    uint256 _tokenId
   ) internal pure returns (string memory) {
     bytes memory dataURI = abi.encodePacked(
       "{",
